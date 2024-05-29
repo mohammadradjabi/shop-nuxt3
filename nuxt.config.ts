@@ -2,5 +2,8 @@
 export default defineNuxtConfig({
   css: ["@/assets/css/custom.css", "@/assets/css/theme.css"],
   experimental: { viewTransition: true },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt", "vue3-carousel-nuxt"],
+  carousel: {
+    prefix: 'MyPrefix'
+  }
 });

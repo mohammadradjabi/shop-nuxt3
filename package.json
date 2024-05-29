@@ -17,6 +17,7 @@
     "vee-validate": "^4.12.8",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
+    "vue3-carousel-nuxt": "^1.1.1",
     "yup": "^1.4.0"
   }
 }

@@ -1,24 +1,25 @@
 import { defineStore } from "pinia";
-import { AppStatusCode } from "~/models/ApiResponse";
-import type { loginResultDTo } from "~/models/auth/loginResultDTo";
-import type { UserDTo } from "~/models/users/userDTo";
-import { getCurrentUser } from "~/services/user.service";
+import { Ref } from "vue";
+import { AppStatusCode } from "~~/models/ApiResponse";
+import { LoginResultDto } from "~~/models/auth/LoginResultDto";
+import { UserDto } from "~~/models/users/userDto";
+import { GetCurrentUser } from "~~/services/user.service";
+
 export const useAuthStore = defineStore("auth", () => {
-  const loginResult: Ref<loginResultDTo | null> = ref(null);
-  const currentUser: Ref<UserDTo | null> = ref(null);
+  const loginResult: Ref<LoginResultDto | null> = ref(null);
+  const currentUser: Ref<UserDto | null> = ref(null);
   const loading = ref(false);
-  const isLogin = computed(() => {
-    loginResult.value != null;
-  });
-  const setCurrentUserValue = async (logindata: loginResultDTo) => {
-    const localStorageData = localStorage.getItem("auth-data");
-    if (!localStorageData) {
+  const isLogin = computed(() => loginResult.value != null);
+
+  const SetCurrentUserValue = async () => {
+    const localStoregData = localStorage.getItem("auth-data");
+    if (!localStoregData) {
       return;
     }
-    const loginData = JSON.parse(localStorageData);
-    loginResult.value = logindata;
+    const loginData = JSON.parse(localStoregData);
+    loginResult.value = loginData;
     loading.value = true;
-    var result = await getCurrentUser();
+    var result = await GetCurrentUser();
     if (result.isSuccess) {
       currentUser.value = result.data;
     } else if (result.metaData.appStatusCode == AppStatusCode.UnAuthorize) {
@@ -26,6 +27,8 @@ export const useAuthStore = defineStore("auth", () => {
       localStorage.removeItem("auth-data");
     }
     loading.value = false;
-    return { currentUser, loading, isLogin, loginResult, setCurrentUserValue };
   };
+
+
+  return {loading,loginResult,currentUser,SetCurrentUserValue,isLogin}
 });
